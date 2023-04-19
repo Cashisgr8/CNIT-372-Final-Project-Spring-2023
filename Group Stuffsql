@@ -1,0 +1,36 @@
+CREATE TABLE VIEWER (
+    UserID INTEGER PRIMARY KEY,
+    Name VARCHAR2(50),
+    Subscription VARCHAR2(50),
+    TimeWatched VARCHAR2(50),
+    DateWatched DATE
+);
+
+CREATE TABLE CHANNEL (
+    ChannelID INTEGER PRIMARY KEY,
+    ChannelName VARCHAR2(20),
+    SubscriberCount VARCHAR2(20),
+    MonetizationStatus VARCHAR2(20),
+    CopyrightClaims VARCHAR2(100),
+    ViewershipMetrics VARCHAR2(50)
+);
+
+CREATE TABLE VIDEO (
+    VideoID INTEGER PRIMARY KEY,
+    ChannelID INTEGER,
+    Title VARCHAR2(50),
+    Views INTEGER,
+    AverageWatchTime TIMESTAMP,
+    Impressions INTEGER,
+    DateUploaded DATE,
+    FOREIGN KEY (ChannelID) REFERENCES CHANNEL(ChannelID)
+);
+
+CREATE TABLE INTERACTION (
+    InteractionID INTEGER PRIMARY KEY,
+    ViewerID INTEGER,
+    InteractionType VARCHAR2(50),
+    InteractionTime TIMESTAMP,
+    FOREIGN KEY (ViewerID) REFERENCES VIEWER(UserID)
+);
+
