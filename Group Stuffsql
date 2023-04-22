@@ -1,31 +1,39 @@
+drop TABLE VIEWER cascade constraints;
+drop TABLE CHANNEL cascade constraints;
+drop TABLE VIDEO cascade constraints;
+--drop TABLE INTERACTION cascade constraints;
+drop TABLE VIEWER_VIDEO cascade constraints;
+
 CREATE TABLE VIEWER (
-    UserID INTEGER PRIMARY KEY,
+    UserID VARCHAR(30) PRIMARY KEY,
     Name VARCHAR2(50),
-    Subscription VARCHAR2(50),
+    Subscribers INTEGER,
     TimeWatched VARCHAR2(50),
-    DateWatched DATE
+    JoinDate DATE
 );
 
 CREATE TABLE CHANNEL (
-    ChannelID INTEGER PRIMARY KEY,
-    ChannelName VARCHAR2(20),
+    ChannelID VARCHAR(30) PRIMARY KEY,
+    ChannelName VARCHAR2(40),
     SubscriberCount VARCHAR2(20),
     MonetizationStatus VARCHAR2(20),
-    CopyrightClaims VARCHAR2(100),
-    ViewershipMetrics VARCHAR2(50)
+    CopyrightClaims VARCHAR2(100)
+--    ,
+--    ViewershipMetrics VARCHAR2(50)
 );
 
 CREATE TABLE VIDEO (
-    VideoID INTEGER PRIMARY KEY,
-    ChannelID INTEGER,
-    Title VARCHAR2(50),
+    VideoID VARCHAR(20) PRIMARY KEY,
+    ChannelID VARCHAR(30),
+    Title VARCHAR2(100),
     Views INTEGER,
-    AverageWatchTime TIMESTAMP,
-    Impressions INTEGER,
+    Likes INTEGER,
     DateUploaded DATE,
-    FOREIGN KEY (ChannelID) REFERENCES CHANNEL(ChannelID)
+    Genre VARCHAR(20)
+--    ,
+--    FOREIGN KEY (ChannelID) REFERENCES CHANNEL(ChannelID)
 );
-
+/*
 CREATE TABLE INTERACTION (
     InteractionID INTEGER PRIMARY KEY,
     ViewerID INTEGER,
@@ -33,4 +41,19 @@ CREATE TABLE INTERACTION (
     InteractionTime TIMESTAMP,
     FOREIGN KEY (ViewerID) REFERENCES VIEWER(UserID)
 );
+*/
+CREATE TABLE VIEWER_VIDEO (
+    UserID VARCHAR(30),
+    VideoID VARCHAR2(20),
+    WatchTime TIMESTAMP,
+    WatchDate DATE,
+    CommentHistory VARCHAR(200),
+--    PRIMARY KEY (UserID, VideoID),
+--    FOREIGN KEY (UserID) REFERENCES VIEWER(UserID),
+--    FOREIGN KEY (VideoID) REFERENCES VIDEO(VideoID)
+--    PRIMARY KEY (UserID),
+    FOREIGN KEY (UserID) REFERENCES VIEWER(UserID)
+);
+
+
 
