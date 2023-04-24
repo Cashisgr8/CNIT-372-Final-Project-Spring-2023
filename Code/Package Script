@@ -1,1 +1,234 @@
-package here
+CREATE OR REPLACE PACKAGE CNIT372PROJECT AS
+
+--QUESTION 1
+
+PROCEDURE GET_GENRE_VIEWS;
+
+--QUESTION 2
+
+PROCEDURE AvgSubCountByMStatus;
+
+--QUESTION 3
+
+function get_favorite_channel
+(p_user_id in viewer_video.userid%type)
+return channel.channelname%type;
+
+--QUESTION 5
+
+PROCEDURE CNIT372WATCHTIME
+(VVUSERID VIEWER_VIDEO.USERID%TYPE, STARTDATE VIEWER_VIDEO.WATCHDATE%TYPE, ENDDATE VIEWER_VIDEO.WATCHDATE%TYPE);
+
+--QUESTION 6
+
+PROCEDURE CNIT372GENREHISTORY
+(VVUSERID VIEWER_VIDEO.USERID%TYPE);
+
+--QUESTION 7
+
+FUNCTION GET_RETURNED_VIDEOS
+(USER_ID VARCHAR2)
+RETURN SYS_REFCURSOR;
+
+--QUESTION 8
+
+PROCEDURE CHANNELMONETIZATION;
+
+--QUESTION 9
+
+PROCEDURE GET_GENRE_RATIO;
+
+--QUESTION 10
+
+PROCEDURE COUNT_COMMENTS_BY_GENRE;
+
+END CNIT372PROJECT;
+
+CREATE OR REPLACE PACKAGE BODY CNIT372PROJECT AS
+
+    --QUESTION 1
+
+    procedure GET_GENRE_VIEWS
+    is
+      genre_name  video.genre%type;
+      total_views number;
+    begin
+      for genre_rec in (select genre, sum(views) as totalviews
+                        from video
+                        group by genre
+                        order by totalviews desc)
+      loop
+        genre_name := genre_rec.genre;
+        total_views := genre_rec.totalviews;
+        dbms_output.put_line(genre_name || ': ' || total_views);
+      end loop;
+    end;
+    
+    --QUESTION 2
+    
+    PROCEDURE AvgSubCountByMStatus
+    IS
+    CURSOR c_channels IS
+    SELECT MonetizationStatus, ROUND(AVG(SubscriberCount))
+            FROM CHANNEL
+            GROUP BY MonetizationStatus
+            ORDER BY MonetizationStatus;
+        v_MonStatus CHANNEL.MonetizationStatus%TYPE;
+        v_AvgSubCount NUMBER;
+    BEGIN
+        OPEN c_channels;
+        LOOP
+            FETCH c_channels INTO v_MonStatus, v_AvgSubCount;
+            EXIT WHEN c_channels%NOTFOUND;
+            DBMS_OUTPUT.PUT_LINE('Average Subscriber Count for '|| v_MonStatus ||  ' is: ' || v_AvgSubCount);
+        END LOOP;
+        CLOSE c_channels;
+    END;
+    
+    --QUESTION 3
+    
+    function get_favorite_channel(
+    p_user_id in viewer_video.userid%type
+    )
+    return channel.channelname%type
+    is
+        v_favorite_channel channel.channelname%type;
+    begin
+        select channelname
+        into v_favorite_channel
+        from (
+            select c.channelname, count(*) as video_count
+            from viewer_video v
+            join video vd on v.videoid = vd.videoid
+            join channel c on vd.channelid = c.channelid
+            where v.userid = p_user_id
+            group by c.channelname
+            order by video_count desc
+        )
+        where rownum = 1;
+    
+        return v_favorite_channel;
+    end;
+
+    --QUESTION 5
+    
+    PROCEDURE CNIT372WATCHTIME
+    (VVUSERID VIEWER_VIDEO.USERID%TYPE, STARTDATE VIEWER_VIDEO.WATCHDATE%TYPE, ENDDATE VIEWER_VIDEO.WATCHDATE%TYPE)
+    AS
+        CURSOR VIDSWATCHED
+        IS
+            SELECT V.TITLE FROM VIDEO V INNER JOIN VIEWER_VIDEO VV
+            ON V.VIDEOID = VV.VIDEOID
+            WHERE VV.USERID LIKE VVUSERID AND VV.WATCHDATE BETWEEN STARTDATE AND ENDDATE;
+            
+        CURRENTVID VIDSWATCHED%ROWTYPE;
+    BEGIN
+        OPEN VIDSWATCHED;
+        
+        FETCH VIDSWATCHED INTO CURRENTVID;
+        
+        DBMS_OUTPUT.PUT_LINE('Videos watched within this time frame:');
+        
+        WHILE VIDSWATCHED%FOUND LOOP
+            DBMS_OUTPUT.PUT_LINE(CURRENTVID.TITLE);
+            FETCH VIDSWATCHED INTO CURRENTVID;
+            
+        END LOOP;
+        
+        CLOSE VIDSWATCHED;
+        
+    END;
+    
+    --QUESTION 6
+    
+    PROCEDURE CNIT372GENREHISTORY
+    (VVUSERID VIEWER_VIDEO.USERID%TYPE)
+    AS
+        CURSOR VIDSWATCHED
+        IS
+            SELECT V.GENRE, COUNT(V.VIDEOID) AS COUNT FROM VIDEO V INNER JOIN VIEWER_VIDEO VV
+            ON V.VIDEOID = VV.VIDEOID
+            WHERE USERID LIKE VVUSERID
+            GROUP BY V.GENRE;
+            
+        CURRENTVID VIDSWATCHED%ROWTYPE;
+    BEGIN
+        OPEN VIDSWATCHED;
+        
+        FETCH VIDSWATCHED INTO CURRENTVID;
+        
+        DBMS_OUTPUT.PUT(RPAD('Video genre', 25, ' '));
+        DBMS_OUTPUT.PUT_LINE('Video count');
+        
+        WHILE VIDSWATCHED%FOUND LOOP
+            DBMS_OUTPUT.PUT(RPAD(CURRENTVID.GENRE, 25, ' '));
+            DBMS_OUTPUT.PUT_LINE(CURRENTVID.COUNT);
+            FETCH VIDSWATCHED INTO CURRENTVID;
+            
+        END LOOP;
+        
+        CLOSE VIDSWATCHED;
+        
+    END;
+    
+    --QUESTION 7
+    
+    function GET_RETURNED_VIDEOS(user_id in varchar2)
+    return sys_refcursor
+    is
+        returned_videos sys_refcursor;
+    begin
+        open returned_videos for
+            select v.title, count(*) as returncount
+            from video v
+            join viewer_video vv on v.videoid = vv.videoid
+            where vv.userid = user_id
+            group by v.videoid, v.title
+            having count(*) > 1
+            order by returncount desc;
+            
+        return returned_videos;
+    end;
+    
+    --QUESTION 8
+    
+    PROCEDURE CHANNELMONETIZATION AS
+    BEGIN
+    FOR channel IN (SELECT ChannelName, MonetizationStatus FROM CHANNEL ORDER BY MonetizationStatus)
+     LOOP
+    DBMS_OUTPUT.PUT_LINE('Channel: ' || channel.ChannelName || ', Monetization Status: ' || channel.MonetizationStatus);
+    END LOOP;
+    END;
+    
+    --QUESTION 9
+    
+    procedure GET_GENRE_RATIO as
+    begin
+      for rec in (
+        select genre, round(avg(likes/views), 4) as likeviewratio
+        from video
+        group by genre
+        order by likeviewratio desc
+      )
+      loop
+        dbms_output.put_line('genre: ' || rec.genre || ', like/view ratio: ' || rec.likeviewratio);
+      end loop;
+    end;
+    
+    --QUESTION 10
+    
+    procedure COUNT_COMMENTS_BY_GENRE is
+    begin
+      for row in (
+        select genre, count(*) as comment_count
+        from video v
+        join viewer_video vv on v.videoid = vv.videoid
+        where commenthistory is not null
+        group by genre
+        order by comment_count desc
+      ) loop
+        dbms_output.put_line(row.genre || ': ' || row.comment_count);
+      end loop;
+    end;
+    
+END CNIT372PROJECT;
