@@ -1,1 +1,17 @@
-Trigger from Question 4 goes here.
+create or replace trigger updatesubcount
+after insert or delete on viewer_video
+for each row
+begin
+  if inserting then
+	update channel
+	set subscribercount = subscribercount + 1
+	where channelid = (select channelid from video where videoid = :new.videoid);
+	dbms_output.put_line('subscriber count was increased by 1');
+  else
+	update channel
+	set subscribercount = subscribercount - 1
+	where channelid = (select channelid from video where videoid = :old.videoid);
+	dbms_output.put_line('subscriber count was reduced by one');
+  end if;
+end;
+
