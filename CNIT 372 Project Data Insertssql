@@ -24,7 +24,7 @@ INSERT INTO CHANNEL values ('UCuAXFkgsw1L7xaCfnd5JJOw','Rick Astley','3662670','
 INSERT INTO CHANNEL values ('UCyVomykHKyWCWo8lSKHHmzA','Billy Joel','1643560','Good','N/A');
 INSERT INTO CHANNEL values ('UCT9zcQNlyht7fRlcjmflRSA','ImagineDragons','30392146','Good','N/A');
 
-INSERT INTO VIDEO VALUES ('ZuQuOnYnr3Q', 'UCz97F7dMxBNOfGYu3rx8aCw', 'INSIDIOUS: THE RED DOOR – Official Trailer (HD)', '9300000', '53000', TO_DATE('04-19-2023', 'MM-DD-YYYY'),'Entertainment');
+INSERT INTO VIDEO VALUES ('ZuQuOnYnr3Q', 'UCz97F7dMxBNOfGYu3rx8aCw', 'INSIDIOUS: THE RED DOOR â€“ Official Trailer (HD)', '9300000', '53000', TO_DATE('04-19-2023', 'MM-DD-YYYY'),'Entertainment');
 INSERT INTO VIDEO VALUES ('rYWtk39JGbY', 'UCylhHbAUoqgdN-XQpJPobOg', 'How to Use Google Takeout in 2022', '37000', NULL , TO_DATE('04-22-2022', 'MM-DD-YYYY'),'Informative');
 INSERT INTO VIDEO VALUES ('R0DQfwc72PM', 'UCka3OGDqIQnPcuh1DtWcBdw', 'How To Google Like A Pro! Top 10 Google Search Tips + Tricks 2020 ', '820906', '12000', TO_DATE('04-06-2015', 'MM-DD-YYYY'),'Informative');
 INSERT INTO VIDEO VALUES ('IPsi6DGkrIA', 'UCR4s1DE9J4DHzZYXMltSMAg', 'How To Fix a Laptop', '3300000', '48000', TO_DATE('05-24-2013', 'MM-DD-YYYY'),'Entertainment');
