@@ -8,11 +8,13 @@ Question 1:
 The get_genre_views procedure does not require specific inputs other than execute. The procedure will sum up all the views for each genre and ouput it as total views in descending order.
 
 Question 2:
+For this procedure, you just need to run it in order to get a list of the average subscriber count for the 3 types of monetization status. It will output to the script output window in SQLDeveloper.
 
 Question 3:
 The get_favorite_channel function requires the userid to be inputted. The function will find the user's favorite channel by counting the videos watched and channel.
 
 Question 4:
+For this trigger, you need to first run the trigger. This makes it so that an INSERT or a DELETE would work. Next a row needs to be either created with an INSERT statement or removing an existing row with a DELETE statement. You need DBMS output turned on to see the output of the trigger.
 
 Question 5:
 The CNIT372WATCHTIME procedure requires 3 inputs. The first input is a user ID, and the other two inputs are dates. The procedure will find all the videos that user has watched in between the two given dates.
@@ -24,6 +26,7 @@ Question 7:
 The get_returned_videos function requires userid to be inputted. The function will find user's watch history and find videos that the user watched more than 1 time.
 
 Question 8:
+For this procedure, you just need to run it in order to get the list of all channels that have a "Good" monetization status. It will output to the script output window in SQLDeveloper.
 
 Question 9:
 The get_genre_ratio procedure does not require user input other than execute. The procedure finds and outputs the like to view ratio and rounding it to 4 decimal points. The output is formatted to be in descending order.
