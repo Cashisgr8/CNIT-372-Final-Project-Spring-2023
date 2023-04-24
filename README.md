@@ -5,10 +5,12 @@ This project uses PL/SQL to answer questions regarding user data collected from 
 
 # Database Instructions
 Question 1:
+The get_genre_views procedure does not require specific inputs other than execute. The procedure will sum up all the views for each genre and ouput it as total views in descending order.
 
 Question 2:
 
 Question 3:
+The get_favorite_channel function requires the userid to be inputted. The function will find the user's favorite channel by counting the videos watched and channel.
 
 Question 4:
 
@@ -17,13 +19,17 @@ The CNIT372WATCHTIME procedure requires 3 inputs. The first input is a user ID, 
 
 Question 6:
 The CNIT372GENREHISTORY procedure requires a single input of a user ID. The procedure will count the number of videos a user has watched for each genre of video.
+
 Question 7:
+The get_returned_videos function requires userid to be inputted. The function will find user's watch history and find videos that the user watched more than 1 time.
 
 Question 8:
 
 Question 9:
+The get_genre_ratio procedure does not require user input other than execute. The procedure finds and outputs the like to view ratio and rounding it to 4 decimal points. The output is formatted to be in descending order.
 
 Question 10:
+The count_comments_by_genre procedure does not require user input other than execute. The procedure finds the number of comments on different types of genre. The output is formatted to output in descending order.
 
 # Youtube Data Request Instructions 
 <br />-
