@@ -9,8 +9,8 @@ Database Instructions
 
 Youtube Data Request Instructions
 =================================
-Navigate to https://takeout.google.com/settings/takeout and only select Youtube and Youtube Music.
-Choose the desired frequency, file type and size.
-Once the exporting process is complete, the data will be sent to your email.
+Navigate to https://takeout.google.com/settings/takeout and only select Youtube and Youtube Music. <br />-
+Choose the desired frequency, file type and size. <br />-
+Once the exporting process is complete, the data will be sent to your email. <br />-
 Download your files and now you have your Youtube data.
 
