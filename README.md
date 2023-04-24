@@ -1,14 +1,12 @@
 # CNIT-372-Final-Project-Spring-2023
 
-Purpose/Background
-==================
+#Purpose/Background
 This project uses PL/SQL to answer questions regarding user data collected from Youtube. Social media uses a lot of data from users to make post suggestions, target adcvertisements, and more. The Oracle database in this repository will allow a user to analyze their own data and see what Youtube looks at to make it's platform user personalized.
 
-Database Instructions
-=====================
+# Database Instructions
 
-Youtube Data Request Instructions
-=================================
+# Youtube Data Request Instructions 
+<br />-
 Navigate to https://takeout.google.com/settings/takeout and only select Youtube and Youtube Music. <br />-
 Choose the desired frequency, file type and size. <br />-
 Once the exporting process is complete, the data will be sent to your email. <br />-
